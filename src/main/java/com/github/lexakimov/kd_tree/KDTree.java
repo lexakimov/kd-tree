@@ -26,15 +26,15 @@ public class KDTree<T extends Comparable<T>> {
 	}
 	
 	public void add(T... items) {
-		new Element<T>(items);
+		new Element(items);
 		size++;
 	}
 	
-	public void add(Element<T> element) {
+	public void add(Element element) {
 	
 	}
 	
-	public class Element<T> {
+	private class Element {
 		private final T[] items;
 		
 		private Element(T[] items) {
