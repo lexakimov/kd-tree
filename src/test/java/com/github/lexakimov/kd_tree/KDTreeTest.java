@@ -20,7 +20,7 @@ class KDTreeTest {
 	void validateDimensionsCount_bad(int dimensions) {
 		assertThrows(IllegalArgumentException.class, () -> new KDTree<Integer>(dimensions));
 	}
-
+	
 	@ParameterizedTest
 	@ValueSource(ints = {1, 2, 3, 10})
 	void validateDimensionsCount_good(int dimensions) {
@@ -33,4 +33,26 @@ class KDTreeTest {
 		assertThat(tree.size(), is(0));
 		assertThat(tree.isEmpty(), is(true));
 	}
+	
+	@Test
+	void addElement_bad() {
+		var tree = new KDTree<Integer>(2);
+		assertThrows(IllegalArgumentException.class, () -> tree.add());
+		assertThat(tree.size(), is(0));
+		assertThrows(IllegalArgumentException.class, () -> tree.add(1));
+		assertThat(tree.size(), is(0));
+		assertThrows(IllegalArgumentException.class, () -> tree.add(1, 3, 2));
+		assertThat(tree.size(), is(0));
+	}
+	
+	@Test
+	void addElement_good() {
+		var tree = new KDTree<Integer>(2);
+		assertDoesNotThrow(() -> tree.add(2, 3));
+		assertThat(tree.size(), is(1));
+		assertDoesNotThrow(() -> tree.add(4, 5));
+		assertThat(tree.size(), is(2));
+	}
+	
+	
 }
