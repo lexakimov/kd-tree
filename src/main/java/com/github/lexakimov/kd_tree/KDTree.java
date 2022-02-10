@@ -21,4 +21,7 @@ public class KDTree<T extends Comparable<T>> {
 		return size;
 	}
 	
+	public boolean isEmpty() {
+		return size == 0;
+	}
 }

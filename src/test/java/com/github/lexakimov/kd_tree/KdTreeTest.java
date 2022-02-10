@@ -1,8 +1,11 @@
 package com.github.lexakimov.kd_tree;
 
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.is;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
@@ -24,6 +27,10 @@ class KdTreeTest {
 		assertDoesNotThrow(() -> new KDTree<Integer>(dimensions));
 	}
 	
-	
-	
+	@Test
+	void getSizeOfEmpty() {
+		var tree = new KDTree<Integer>(2);
+		assertThat(tree.size(), is(0));
+		assertThat(tree.isEmpty(), is(true));
+	}
 }
