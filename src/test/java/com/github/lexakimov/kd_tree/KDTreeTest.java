@@ -13,7 +13,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
  * @author akimov
  * created at 10.02.2022 19:39
  */
-class KdTreeTest {
+class KDTreeTest {
 	
 	@ParameterizedTest
 	@ValueSource(ints = {0, -1, -2, -10})
