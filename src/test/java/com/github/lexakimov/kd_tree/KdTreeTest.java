@@ -3,6 +3,7 @@ package com.github.lexakimov.kd_tree;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 /**
@@ -16,5 +17,13 @@ class KdTreeTest {
 	void validateDimensionsCount_bad(int dimensions) {
 		assertThrows(IllegalArgumentException.class, () -> new KDTree<Integer>(dimensions));
 	}
+
+	@ParameterizedTest
+	@ValueSource(ints = {1, 2, 3, 10})
+	void validateDimensionsCount_good(int dimensions) {
+		assertDoesNotThrow(() -> new KDTree<Integer>(dimensions));
+	}
+	
+	
 	
 }
