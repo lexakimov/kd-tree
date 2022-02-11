@@ -56,16 +56,10 @@ class KDTreeTest {
 	}
 	
 	@Test
-	void getRootOfEmptyTree() {
-		var tree = new KDTree<Integer>(2);
-		assertThrows(KDTree.EmptyTreeException.class, () -> tree.getRoot());
-	}
-	
-	@Test
 	void addFirstElement() {
 		var tree = new KDTree<Integer>(2);
 		tree.add(1, 2);
-		assertThat(tree.getRoot(), arrayContaining(1, 2));
+		assertThat(tree.root.valuesByDimensions, arrayContaining(1, 2));
 	}
 	
 	@Nested
@@ -80,38 +74,29 @@ class KDTreeTest {
 			assertThat(tree.size(), is(3));
 			
 			var root = tree.root;
-			assertNotNull(root);
 			{
-				var items = root.items;
+				assertNotNull(root);
+				var items = root.valuesByDimensions;
 				assertNotNull(items);
-				var valuesByDimensions = items.valuesByDimensions;
-				assertNotNull(valuesByDimensions);
-				assertThat(valuesByDimensions.length, is(1));
-				assertThat(valuesByDimensions[0], is(5));
+				assertThat(items.length, is(1));
+				assertThat(items[0], is(5));
 			}
-			
+			var left = root.left;
 			{
-				var left = root.left;
 				assertNotNull(left);
-				var items = left.items;
+				var items = left.valuesByDimensions;
 				assertNotNull(items);
-				var valuesByDimensions = items.valuesByDimensions;
-				assertNotNull(valuesByDimensions);
-				assertThat(valuesByDimensions.length, is(1));
-				assertThat(valuesByDimensions[0], is(4));
+				assertThat(items.length, is(1));
+				assertThat(items[0], is(4));
 			}
-			
+			var right = root.right;
 			{
-				var right = root.right;
 				assertNotNull(right);
-				var items = right.items;
+				var items = right.valuesByDimensions;
 				assertNotNull(items);
-				var valuesByDimensions = items.valuesByDimensions;
-				assertNotNull(valuesByDimensions);
-				assertThat(valuesByDimensions.length, is(1));
-				assertThat(valuesByDimensions[0], is(6));
+				assertThat(items.length, is(1));
+				assertThat(items[0], is(6));
 			}
-			
 		}
 		
 	}

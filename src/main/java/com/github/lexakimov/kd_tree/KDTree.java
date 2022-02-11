@@ -6,7 +6,7 @@ package com.github.lexakimov.kd_tree;
  * @author akimov
  * created at 10.02.2022 20:21
  */
-public class KDTree<T extends Comparable<T>> {
+public final class KDTree<T extends Comparable<T>> {
 	private final int dimensions;
 	private int size;
 	Node root;
@@ -26,55 +26,57 @@ public class KDTree<T extends Comparable<T>> {
 		return size == 0;
 	}
 	
-	public void add(T... items) {
-		var itemsObj = new Items(items);
+	public void add(T... valuesByDimensions) {
 		if (root == null) {
-			root = new Node(itemsObj, null, null);
+			root = new Node(valuesByDimensions, null, null);
+			size++;
 		} else {
-			addElementIntoTree(root, itemsObj, 0);
+			addElementIntoTree(root, valuesByDimensions, 0);
 		}
 	}
 	
-	private void addElementIntoTree(Node parent, Items child, int treeDepth) {
+	private void addElementIntoTree(Node parent, T[] child, int treeDepth) {
 		var left = parent.left;
 		var right = parent.right;
 		
 		if (left == null && right == null) {
-			var isParentGreaterThanAdded = parent.items.compareTo(child, treeDepth) > 0;
+			var isParentGreaterThanAdded = parent.compareTo(child, treeDepth) > 0;
 			if (isParentGreaterThanAdded) {
 				parent.left = new Node(child, null, null);
 			} else {
 				parent.right = new Node(child, null, null);
 			}
+			size++;
 			return;
 		}
 		
 		if (left != null) {
-			var isLeftGreaterThanAdded = left.items.compareTo(child, 0) > 0;
+			var isLeftGreaterThanAdded = left.compareTo(child, treeDepth) > 0;
 			if (isLeftGreaterThanAdded) {
 				addElementIntoTree(left, child, ++treeDepth);
 			} else {
 				parent.right = new Node(child, null, null);
+				size++;
 			}
 		}
 		
 		if (right != null) {
-			var isRightLessThanAdded = right.items.compareTo(child, 0) < 0;
+			var isRightLessThanAdded = right.compareTo(child, treeDepth) < 0;
+			if (isRightLessThanAdded) {
+			
+			} else {
+			
+			}
 		}
 
 	}
 	
-	public T[] getRoot() {
-		if (isEmpty()) {
-			throw new EmptyTreeException();
-		}
-		return root.items.valuesByDimensions;
-	}
-	
-	class Items {
+	class Node {
 		final T[] valuesByDimensions;
+		Node left;
+		Node right;
 		
-		private Items(T[] valuesByDimensions) {
+		private Node(T[] valuesByDimensions, Node left, Node right) {
 			if (valuesByDimensions.length == 0) {
 				throw new IllegalArgumentException("the number of items must be equal " + dimensions + ", not zero");
 			}
@@ -84,35 +86,22 @@ public class KDTree<T extends Comparable<T>> {
 				);
 			}
 			this.valuesByDimensions = valuesByDimensions;
-			size++;
-		}
-		
-		/**
-		 * @param treeLevel
-		 * @param items
-		 * @return a negative integer, zero, or a positive integer as the current element is less than, equal to,
-		 * or greater than the element in parameter.
-		 */
-		private int compareTo(Items items, int treeLevel) {
-			var currentDimension = treeLevel % dimensions;
-			var item1 = this.valuesByDimensions[currentDimension];
-			var item2 = items.valuesByDimensions[currentDimension];
-			return item1.compareTo(item2);
-		}
-	}
-	
-	class Node {
-		final Items items;
-		Node left;
-		Node right;
-		
-		private Node(Items items, Node left, Node right) {
-			this.items = items;
 			this.left = left;
 			this.right = right;
 		}
+		
+		/**
+		 * @param valuesByDimensions
+		 * @param treeLevel
+		 * @return a negative integer, zero, or a positive integer as the current element is less than, equal to,
+		 * or greater than the element in parameter.
+		 */
+		private int compareTo(T[] valuesByDimensions, int treeLevel) {
+			var currentDimension = treeLevel % dimensions;
+			var thisValue = this.valuesByDimensions[currentDimension];
+			var value = valuesByDimensions[currentDimension];
+			return thisValue.compareTo(value);
+		}
 	}
-	
-	public static class EmptyTreeException extends RuntimeException {}
 	
 }
