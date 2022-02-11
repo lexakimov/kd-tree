@@ -74,31 +74,36 @@ class KDTreeTest {
 			assertThat(tree.size(), is(3));
 			
 			var root = tree.root;
-			{
-				assertNotNull(root);
-				var items = root.valuesByDimensions;
-				assertNotNull(items);
-				assertThat(items.length, is(1));
-				assertThat(items[0], is(5));
-			}
+			checkNodeValue(root, 5);
 			var left = root.left;
-			{
-				assertNotNull(left);
-				var items = left.valuesByDimensions;
-				assertNotNull(items);
-				assertThat(items.length, is(1));
-				assertThat(items[0], is(4));
-			}
+			checkNodeValue(left, 4);
 			var right = root.right;
-			{
-				assertNotNull(right);
-				var items = right.valuesByDimensions;
-				assertNotNull(items);
-				assertThat(items.length, is(1));
-				assertThat(items[0], is(6));
-			}
+			checkNodeValue(right, 6);
 		}
 		
+		@Test
+		void addThreeElements_5_4_3_balance() {
+			var tree = new KDTree<Integer>(1);
+			tree.add(5);
+			tree.add(4);
+			tree.add(3);
+			assertThat(tree.size(), is(3));
+			
+			var root = tree.root;
+			checkNodeValue(root, 4);
+			var left = root.left;
+			checkNodeValue(left, 3);
+			var right = root.right;
+			checkNodeValue(right, 5);
+		}
+		
+		private void checkNodeValue(KDTree<Integer>.Node root, int value) {
+			assertNotNull(root);
+			var items = root.valuesByDimensions;
+			assertNotNull(items);
+			assertThat(items.length, is(1));
+			assertThat(items[0], is(value));
+		}
 	}
 	
 }
